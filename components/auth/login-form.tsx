@@ -4,7 +4,13 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -16,22 +22,23 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!role || !email || !password) {
       toast.error('Please fill in all fields');
       return;
     }
 
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       toast.success(`Welcome back! Logging in as ${role}`);
-      
+
       // Route based on role
       switch (role) {
         case 'student':
@@ -46,10 +53,13 @@ export function LoginForm() {
         case 'admin':
           router.push('/dashboard/admin');
           break;
+        case 'superadmin':
+          router.push('/dashboard/superadmin');
+          break;
         default:
           router.push('/dashboard');
       }
-      
+
       setIsLoading(false);
     }, 1500);
   };
@@ -57,6 +67,7 @@ export function LoginForm() {
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Role */}
         <div className="space-y-2">
           <Label htmlFor="role">Select Role</Label>
           <Select value={role} onValueChange={setRole}>
@@ -68,10 +79,12 @@ export function LoginForm() {
               <SelectItem value="parent">Parent</SelectItem>
               <SelectItem value="teacher">Teacher</SelectItem>
               <SelectItem value="admin">Admin</SelectItem>
+              <SelectItem value="superadmin">Super Admin</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
+        {/* Email */}
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -84,6 +97,7 @@ export function LoginForm() {
           />
         </div>
 
+        {/* Password */}
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
           <div className="relative">
@@ -111,6 +125,7 @@ export function LoginForm() {
           </div>
         </div>
 
+        {/* Submit */}
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? (
             <div className="flex items-center space-x-2">
@@ -129,12 +144,15 @@ export function LoginForm() {
       {/* Demo Credentials */}
       <Card className="bg-gray-50 border-gray-200">
         <CardContent className="p-4">
-          <h4 className="font-medium text-sm text-gray-700 mb-2">Demo Credentials:</h4>
+          <h4 className="font-medium text-sm text-gray-700 mb-2">
+            Demo Credentials:
+          </h4>
           <div className="space-y-1 text-xs text-gray-600">
             <p><strong>Student:</strong> student@demo.com / demo123</p>
             <p><strong>Parent:</strong> parent@demo.com / demo123</p>
             <p><strong>Teacher:</strong> teacher@demo.com / demo123</p>
             <p><strong>Admin:</strong> admin@demo.com / demo123</p>
+            <p><strong>Super Admin:</strong> superadmin@demo.com / demo123</p>
           </div>
         </CardContent>
       </Card>
